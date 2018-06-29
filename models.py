@@ -1,5 +1,6 @@
 import torch
 from torchvision import models
+from tensorboardX import SummaryWriter
 
 
 class Two_head(torch.nn.Module):
@@ -16,3 +17,10 @@ class Two_head(torch.nn.Module):
         out1 = self.head1(feature)
         out2 = self.head2(feature)
         return out1, out2
+
+
+if __name__ == '__main__':
+    dummy_input = torch.rand(1, 3, 224, 224)
+    with SummaryWriter(log_dir='./log', comment='two-head') as w:
+        model = Two_head(512, 3, 3)
+        w.add_graph(model, dummy_input)
